@@ -64,6 +64,9 @@ export async function getPostLikes(postId : string) {
 // database
 // user has many posts, post has one user
 // user likes many posts, posts have many user likes
+// post: id, description, flower tags, date posted, author, photos
+// user: id, username, email
+// postlikes: postid, userid
 
 // some things we can hard code for now, because it will probably
 // not change in the future and we want it to load fast, also for seo:

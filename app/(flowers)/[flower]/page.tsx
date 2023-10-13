@@ -6,6 +6,7 @@ import { Posts } from '@/components/posts'
 export default function Page({ params }: { params: { flower: string } }) {
   const { flower } = params
 
+  // TODO: this function should be async in the future
   // const flowerPosts = getFlowerPosts(flower)
   const flowerPosts : Post[] = [
     {
