@@ -1,6 +1,6 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp, getApps } from "firebase/app";
-import { getFirestore, collection, getDocs, query, where } from "firebase/firestore";
+import { getFirestore, collection, getDocs, query, where, doc, getDoc } from "firebase/firestore";
 
 import { Post } from '@/lib/types'
 
@@ -21,6 +21,10 @@ export async function getCollection(collectionName : string) {
   return await getDocs(collection(db, collectionName));
 }
 
+export async function getDocFromCollection(collectionName : string, docId : string) {
+  return await getDoc(doc(db, collectionName, docId));
+}
+
 export async function getFlowerPosts(flowerName : string) {
   const q = query(collection(db, "posts"), where("flower", "==", flowerName));
   const posts = await getDocs(q);
@@ -33,3 +37,36 @@ export async function getPostLikes(postId : string) {
   const likes = await getDocs(q);
   return likes.docs.map(doc => doc.data());
 }
+
+// planning and structuring
+
+// interaction flow
+// go on website, first thing you see is flower page
+// you can see all the different types of ju huas
+// click on a flower to bring up its posts.
+// can query the post with filter, also sort by most recent / likes
+// can tap into a post to enlargen it, see its caption, likes, author
+// you can also like the post
+// click on author to view author page
+// can see list of author's posts
+
+// probably some good functions to have:
+// use crud
+// crud user 
+// crud post
+// getPosts + operations to filter by author, type, and to sort by likes, time posted
+// crd postLikes
+
+// database
+// user has many posts, post has one user
+// user likes many posts, posts have many user likes
+
+// some things we can hard code for now, because it will probably
+// not change in the future and we want it to load fast, also for seo:
+// the flower page with the different types of flowers
+// i think it would be fun to 3d generate them or something
+
+// login, auth
+// once you login, you see your account and your posts
+// also a home button at the top so you can go back home
+// only logged in users can cud their own post and cd postLikes
