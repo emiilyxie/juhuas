@@ -1,28 +1,32 @@
-'use client'
-
-import { collection, query, where } from "firebase/firestore";
-import { db } from "@/lib/firebase";
-import { useCollection } from "react-firebase-hooks/firestore";
-import { getCollection } from "@/lib/firebase";
-
 import Link from 'next/link'
+import { FlowerTypes, Post } from '@/lib/types'
+import { getFlowerPosts } from '@/lib/firebase'
+import { Posts } from '@/components/posts'
 
 export default function Page({ params }: { params: { flower: string } }) {
   const { flower } = params
 
-  const q = query(collection(db, "posts"), where("flower", "==", flower));
-  const [postsSnapshot, loading, error] = useCollection(q);
+  // const flowerPosts = getFlowerPosts(flower)
+  const flowerPosts : Post[] = [
+    {
+      flower: "flowerType1",
+      user: "aaa"
+    },
+    {
+      flower: "flowerType2",
+      user: "bbb"
+    },
+  ]
 
   return (
     <div>
       <div>{flower}</div>
-      {postsSnapshot && postsSnapshot.docs.map(post => <Link href={`/p/${post.id}`}>{post.data().user}</Link>)}
+      <Posts posts={flowerPosts} />
     </div>
   )
 }
 
-export async function generateStaticParams() {
-  return (await getCollection("flowers")).docs.map(flower => ({ flower: flower.data().name }))
+// TODO: only allow flowers in the enum to be paths, rest are 404
+export function generateStaticParams() {
+  return Object.keys(FlowerTypes)
 }
-
-export const dynamicParams = false
