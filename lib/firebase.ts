@@ -32,6 +32,10 @@ export async function getFlowerPosts(flowerName : string) {
   return posts.docs.map(doc => doc.data()) as Post[];
 }
 
+export async function getPost(postId : string) {
+  return null
+}
+
 export async function getPostLikes(postId : string) {
   const q = query(collection(db, "posts", postId, "likes"));
   const likes = await getDocs(q);

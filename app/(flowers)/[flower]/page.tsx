@@ -9,10 +9,12 @@ export default function Page({ params }: { params: { flower: string } }) {
   // const flowerPosts = getFlowerPosts(flower)
   const flowerPosts : Post[] = [
     {
+      id: "aaa",
       flower: "flowerType1",
       user: "aaa"
     },
     {
+      id: "bbb",
       flower: "flowerType2",
       user: "bbb"
     },

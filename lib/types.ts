@@ -1,4 +1,5 @@
 export type Post = {
+  id: string,
   flower: string,
   user: string,
 }
