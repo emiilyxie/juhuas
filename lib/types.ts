@@ -4,7 +4,7 @@ export type Post = {
   images: string[],
   caption: string,
   flowers: string[],
-  date: Date
+  date: number
 }
 
 export type User = {

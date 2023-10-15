@@ -1,6 +1,7 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp, getApps } from "firebase/app";
-import { getFirestore, collection, getDocs, query, where, doc, getDoc } from "firebase/firestore";
+import { getFirestore, collection, getDocs, query, where, doc, getDoc, addDoc, DocumentReference, serverTimestamp } from "firebase/firestore";
+import { getStorage, ref, uploadBytes } from "firebase/storage";
 import { FlowerTypes, Post } from '@/lib/types'
 
 const firebaseConfig = {
@@ -15,14 +16,6 @@ const firebaseConfig = {
 
 export const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0];
 export const db = getFirestore(app);
-
-export async function getCollection(collectionName : string) {
-  return await getDocs(collection(db, collectionName));
-}
-
-export async function getDocFromCollection(collectionName : string, docId : string) {
-  return await getDoc(doc(db, collectionName, docId));
-}
 
 export const getFlowerPosts = async (flowerType: FlowerTypes): Promise<Post[]> => {
   const q = query(collection(db, "posts"), where("flowers", "array-contains", flowerType))
@@ -60,6 +53,29 @@ export const getPost = async (postId: string) : Promise<Post> => {
     throw new Error("Post does not exist")
   }
 }
+
+export const createPost = async (post: Post, files: File[]): Promise<DocumentReference> => {
+  console.log("creating post")
+  const postRef = collection(db, "posts");
+  const postDoc = await addDoc(postRef, {
+    userid: post.userid,
+    caption: post.caption,
+    images: post.images,
+    flowers: post.flowers,
+    date: serverTimestamp(),
+  })
+
+  console.log(postDoc)
+
+  const storage = getStorage(app);
+  const postImagesRef = ref(storage, `posts/${postDoc.id}/images`);
+
+  for (const file of files) {
+    await uploadBytes(postImagesRef, file);
+  }
+
+  return postDoc
+};
 
 export async function getPostLikes(postId : string) {
   const q = query(collection(db, "posts", postId, "likes"));
