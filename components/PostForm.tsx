@@ -14,6 +14,13 @@ export function PostForm() {
   const [caption, setCaption] = useState("");
   const [imgs, setImgs] = useState<File[] | null>(null);
   const [flowers, setFlowers] = useState<FlowerTypes[]>([]);
+
+  // TODO: account for multiple images and change image name
+  // TODO: make the multiselect better
+  // TODO: make the transaction atomic
+  // TODO: make the image preview better
+  // TODO: make the form prettier
+
   const isValid = (
     caption.length > 0 && caption.length < 500 && 
     imgs != null && imgs.length > 0 &&
@@ -26,7 +33,7 @@ export function PostForm() {
       id: "",
       userid: "ktnkog5xAQKwIVOiN3aZ",
       caption: caption,
-      images: imgs!.map((img) => img.name),
+      images: imgs!.map((img) => img.name), // TODO: generate the name
       flowers: flowers,
       date: Date.now(),
     }
