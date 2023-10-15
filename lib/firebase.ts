@@ -1,8 +1,7 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp, getApps } from "firebase/app";
 import { getFirestore, collection, getDocs, query, where, doc, getDoc } from "firebase/firestore";
-
-import { Post } from '@/lib/types'
+import { FlowerTypes, Post } from '@/lib/types'
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -25,8 +24,8 @@ export async function getDocFromCollection(collectionName : string, docId : stri
   return await getDoc(doc(db, collectionName, docId));
 }
 
-export async function getFlowerPosts(flowerName : string) {
-  const q = query(collection(db, "posts"), where("flower", "==", flowerName));
+export async function getFlowerPosts(flowerType : FlowerTypes) {
+  const q = query(collection(db, "posts"), where("flowers", "array-contains", flowerType));
   const posts = await getDocs(q);
   console.log(posts.docs.map(doc => doc.data()));
   return posts.docs.map(doc => doc.data()) as Post[];

@@ -5,7 +5,7 @@ export function Posts(props : { posts : Post[] }) {
 
   return (
     <div>
-      {props.posts.map(p => <Link href={`p/${p.id}`}><div>{p.flower}</div></Link>)}
+      {props.posts.map(p => <Link href={`p/${p.id}`}><div>{p.caption}</div></Link>)}
     </div>
   )
 }

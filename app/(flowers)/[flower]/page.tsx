@@ -1,30 +1,39 @@
+'use client'
+
 import Link from 'next/link'
 import { FlowerTypes, Post } from '@/lib/types'
 import { getFlowerPosts } from '@/lib/firebase'
 import { Posts } from '@/components/posts'
+import { useEffect, useState } from 'react'
 
-export default function Page({ params } : { params : { flower : string } }) {
+export default function Page({ params } : { params : { flower : FlowerTypes } }) {
   const { flower } = params
+  const [posts, setPosts] = useState<Post[]>([])
 
-  // TODO: this function should be async in the future
-  // const flowerPosts = getFlowerPosts(flower)
-  const flowerPosts : Post[] = [
-    {
-      id: "aaa",
-      flower: "flowerType1",
-      user: "aaa"
-    },
-    {
-      id: "bbb",
-      flower: "flowerType2",
-      user: "bbb"
-    },
-  ]
+  useEffect(() => {
+    (async () => {
+      const flowerPosts = await getFlowerPosts(flower)
+      setPosts(flowerPosts)
+    })()
+  }, [flower])
+  
+  // const flowerPosts : Post[] = [
+  //   {
+  //     id: "aaa",
+  //     flower: "flowerType1",
+  //     user: "aaa"
+  //   },
+  //   {
+  //     id: "bbb",
+  //     flower: "flowerType2",
+  //     user: "bbb"
+  //   },
+  // ]
 
   return (
     <div>
       <div>{flower}</div>
-      <Posts posts={flowerPosts} />
+      <Posts posts={posts} />
     </div>
   )
 }
