@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import { FlowerTypes, Post } from '@/lib/types'
 import { getFlowerPosts } from '@/lib/firebase'
-import { Posts } from '@/components/posts'
+import { PostGrid } from '@/components/PostGrid'
 import { useEffect, useState } from 'react'
 
 export default function Page({ params } : { params : { flower : FlowerTypes } }) {
@@ -33,7 +33,7 @@ export default function Page({ params } : { params : { flower : FlowerTypes } })
   return (
     <div>
       <div>{flower}</div>
-      <Posts posts={posts} />
+      <PostGrid posts={posts} />
     </div>
   )
 }
