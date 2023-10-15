@@ -24,11 +24,22 @@ export async function getDocFromCollection(collectionName : string, docId : stri
   return await getDoc(doc(db, collectionName, docId));
 }
 
-export async function getFlowerPosts(flowerType : FlowerTypes) {
+export const getFlowerPosts = async (flowerType: FlowerTypes): Promise<Post[]> => {
   const q = query(collection(db, "posts"), where("flowers", "array-contains", flowerType));
   const posts = await getDocs(q);
-  console.log(posts.docs.map(doc => doc.data()));
-  return posts.docs.map(doc => doc.data()) as Post[];
+  console.log(posts.docs.map(doc => doc.data()))
+  return posts.docs.map(doc => {
+    const data = doc.data();
+    const post: Post = {
+      id: doc.id,
+      userid: data.author,
+      caption: data.caption,
+      images: data.photos,
+      flowers: data.flowers,
+      date: data.date,
+    };
+    return post as Post;
+  });
 }
 
 export async function getPost(postId : string) {
