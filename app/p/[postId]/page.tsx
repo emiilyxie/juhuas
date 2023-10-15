@@ -13,7 +13,6 @@ export default function Page({ params }: { params : { postId : string }}) {
     (async () => {
       try {
         const post = await getPost(postId)
-        console.log(post)
         setPost(post)
       } catch (error) {
         console.error(error)
@@ -26,16 +25,7 @@ export default function Page({ params }: { params : { postId : string }}) {
   return (
     <div>
       <div>a post</div>
-      <div>{loading ? "loading" : ( post ? post.id : "404" )}</div>
+      <div>{loading ? "loading" : ( post ? post.caption : "404" )}</div>
     </div>
   )
 }
-
-
-// TODO: rest of posts are 404
-// export async function generateStaticParams() {
-//   console.log("generating static params")
-//   return (await getCollection("posts")).docs.map(post => ({ post: post.id }))
-// }
-
-// export const dynamicParams = false
