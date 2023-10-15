@@ -2,7 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import { ChangeEvent, useState } from 'react';
-import { createPost } from "@/lib/firebase";
+import { createPost, deletePost, editPost } from "@/lib/firebase";
 import { FlowerTypes, Post } from '@/lib/types';
 import { ImageInput } from './ImageInput';
 
@@ -20,29 +20,34 @@ export function PostForm(props : { edit : boolean, post : Post } ) {
 
   const isValid = (
     caption.length > 0 && caption.length < 500 && 
-    imgs != null && imgs.length > 0 &&
-    flowers.length > 0)
+    flowers.length > 0 &&
+    (props.edit || !props.edit && imgs && imgs.length > 0))
 
-  const handleSubmit = async (e : React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const handleSubmit = async () => {
 
-    const post : Post = {
-      id: "",
-      userid: "ktnkog5xAQKwIVOiN3aZ",
+    console.log("im being called?")
+    const newPost : Post = {
+      id: props.post.id,
+      userid: "ktnkog5xAQKwIVOiN3aZ", // TODO: get the user id
       caption: caption,
-      images: imgs!.map((img) => img.name), // TODO: generate the name
+      images: imgs ? imgs.map((img) => img.name) : [], // TODO: generate the name
       flowers: flowers,
       date: Date.now(),
     }
 
-    let docRef = await createPost(post, imgs!);
-
-    // const docRef = await addDoc(collection(db, "posts"), data);
-    // const storage = getStorage();
-    // let imgRef = ref(storage, `posts/${docRef.id}/${Date.now()}.jpg`);
-    // await uploadBytes(imgRef, img!);
+    let docRef = null;
+    if (props.edit) {
+      docRef = await editPost(newPost);
+    } else {
+      docRef = await createPost(newPost, imgs!);
+    }
 
     router.push(`/p/${docRef.id}`);
+  }
+
+  const handleDelete = async () => {
+    deletePost(props.post)
+    router.push("/");
   }
 
   let setImgsArray = (file : File) => {
@@ -65,14 +70,15 @@ export function PostForm(props : { edit : boolean, post : Post } ) {
   }
 
   return (
-    <form onSubmit={handleSubmit}>
+    <div>
       <input
         value={caption}
         onChange={(e) => setCaption(e.target.value)}
         placeholder="description"
       />
 
-      {!props.edit && <ImageInput onSelect={setImgsArray}/>}
+      {!props.edit && 
+        <ImageInput onSelect={setImgsArray}/>}
 
       <div>
       <label htmlFor="flowers">Flower Types:</label>
@@ -83,9 +89,14 @@ export function PostForm(props : { edit : boolean, post : Post } ) {
       </select>
       </div>
 
-      <button type="submit" disabled={!isValid} className="btn-green">
-        Create New Post
+      <button onClick={handleSubmit} disabled={!isValid}>
+        {props.edit ? "Update" : "Create"} Post
       </button>
-    </form>
+
+      {props.edit &&
+        <button onClick={handleDelete}>
+          Delete Post
+        </button>}
+    </div>
   );
 }

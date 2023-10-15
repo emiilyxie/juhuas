@@ -1,7 +1,7 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp, getApps } from "firebase/app";
-import { getFirestore, collection, getDocs, query, where, doc, getDoc, addDoc, DocumentReference, serverTimestamp } from "firebase/firestore";
-import { getStorage, ref, uploadBytes } from "firebase/storage";
+import { getFirestore, collection, getDocs, query, where, doc, getDoc, addDoc, DocumentReference, serverTimestamp, updateDoc, deleteDoc } from "firebase/firestore";
+import { deleteObject, getStorage, listAll, ref, uploadBytes } from "firebase/storage";
 import { FlowerTypes, Post } from '@/lib/types'
 
 const firebaseConfig = {
@@ -65,8 +65,6 @@ export const createPost = async (post: Post, files: File[]): Promise<DocumentRef
     date: serverTimestamp(),
   })
 
-  console.log(postDoc)
-
   const storage = getStorage(app);
   const postImagesRef = ref(storage, `posts/${postDoc.id}/images`);
 
@@ -75,7 +73,29 @@ export const createPost = async (post: Post, files: File[]): Promise<DocumentRef
   }
 
   return postDoc
-};
+}
+
+export const editPost = async (post: Post): Promise<DocumentReference> => {
+  const docRef = doc(db, "posts", post.id);
+  await updateDoc(docRef, {
+    caption: post.caption,
+    flowers: post.flowers,
+  });
+  return docRef;
+}
+
+export const deletePost = async (post: Post): Promise<void> => {
+  const docRef = doc(db, "posts", post.id);
+  await deleteDoc(docRef);
+
+  const storage = getStorage(app);
+  const postImagesRef = ref(storage, `posts/${post.id}`);
+  const imagesList = await listAll(postImagesRef);
+
+  for (const image of imagesList.items) {
+    await deleteObject(image);
+  }
+}
 
 export async function getPostLikes(postId : string) {
   const q = query(collection(db, "posts", postId, "likes"));

@@ -22,7 +22,7 @@ export default function Page({ params } : { params : { postId : string }}) {
       }
       setLoading(false)
     })()
-  })
+  }, [postId])
   
 
   return (
