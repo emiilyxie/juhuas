@@ -50,7 +50,7 @@ export async function getPostLikes(postId : string) {
 // click on a flower to bring up its posts.
 // can query the post with filter, also sort by most recent / likes
 // can tap into a post to enlargen it, see its caption, likes, author
-// you can also like the post
+// you can also like / comment on the post
 // click on author to view author page
 // can see list of author's posts
 
@@ -63,10 +63,13 @@ export async function getPostLikes(postId : string) {
 
 // database
 // user has many posts, post has one user
-// user likes many posts, posts have many user likes
+// user likes many posts, posts have many user likes. but a user can only
+// give one like to a post, so it's the primary key
+// user can comment on the post multiple times
 // post: id, description, flower tags, date posted, author, photos
 // user: id, username, email
 // postlikes: postid, userid
+// postComment: commentid, postid, userid, comment, date
 
 // some things we can hard code for now, because it will probably
 // not change in the future and we want it to load fast, also for seo:
