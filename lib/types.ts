@@ -3,7 +3,7 @@ export type Post = {
   userid: string,
   images: string[],
   caption: string,
-  flowers: string[],
+  flowers: FlowerTypes[],
   date: number
 }
 

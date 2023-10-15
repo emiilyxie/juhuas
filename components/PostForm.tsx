@@ -2,18 +2,15 @@
 
 import { useRouter } from 'next/navigation';
 import { ChangeEvent, useState } from 'react';
-import { serverTimestamp } from 'firebase/firestore';
-import { collection, addDoc } from "firebase/firestore";
-import { getStorage, ref, uploadBytes } from "firebase/storage";
-import { createPost, db } from "@/lib/firebase";
+import { createPost } from "@/lib/firebase";
 import { FlowerTypes, Post } from '@/lib/types';
 import { ImageInput } from './ImageInput';
 
-export function PostForm() {
+export function PostForm(props : { edit : boolean, post : Post } ) {
   const router = useRouter();
-  const [caption, setCaption] = useState("");
+  const [caption, setCaption] = useState(props.post.caption);
   const [imgs, setImgs] = useState<File[] | null>(null);
-  const [flowers, setFlowers] = useState<FlowerTypes[]>([]);
+  const [flowers, setFlowers] = useState<FlowerTypes[]>(props.post.flowers);
 
   // TODO: account for multiple images and change image name
   // TODO: make the multiselect better
@@ -75,7 +72,7 @@ export function PostForm() {
         placeholder="description"
       />
 
-      <ImageInput onSelect={setImgsArray}/>
+      {!props.edit && <ImageInput onSelect={setImgsArray}/>}
 
       <div>
       <label htmlFor="flowers">Flower Types:</label>

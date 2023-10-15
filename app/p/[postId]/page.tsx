@@ -3,6 +3,7 @@
 import { getPost } from "@/lib/firebase";
 import { useEffect, useState } from "react";
 import { Post } from "@/lib/types";
+import Link from "next/link";
 
 export default function Page({ params }: { params : { postId : string }}) {
   const { postId } = params
@@ -25,7 +26,13 @@ export default function Page({ params }: { params : { postId : string }}) {
   return (
     <div>
       <div>a post</div>
-      <div>{loading ? "loading" : ( post ? post.caption : "404" )}</div>
+      <div>{loading ? "loading" : 
+      ( post ? 
+        <div>
+          <div>{post.caption}</div>
+          <Link href={`${post.id}/edit`}>edit post</Link>
+        </div> : 
+        "404" )}</div>
     </div>
   )
 }
