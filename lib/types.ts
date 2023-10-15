@@ -1,15 +1,33 @@
 export type Post = {
   id: string,
-  flower: string,
-  user: string,
+  userid: string,
+  images: string[],
+  caption: string,
+  flowers: string[],
+  date: Date
 }
 
-export type Flower = {
-  name: string,
-  link: string
+export type User = {
+  id: string,
+  username: string,
+  email: string,
+  role: UserRole,
+  bio: string,
+  profilePic: string,
+  dateJoined: Date
+}
+
+export type PostLike = {
+  postid: string,
+  userid: string,
 }
 
 export enum FlowerTypes {
   flowerType1 = "Flower Type 1",
   flowerType2 = "Flower Type 2",
+}
+
+export enum UserRole {
+  admin = "admin",
+  user = "user",
 }
