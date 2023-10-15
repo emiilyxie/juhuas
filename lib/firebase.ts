@@ -25,8 +25,8 @@ export async function getDocFromCollection(collectionName : string, docId : stri
 }
 
 export const getFlowerPosts = async (flowerType: FlowerTypes): Promise<Post[]> => {
-  const q = query(collection(db, "posts"), where("flowers", "array-contains", flowerType));
-  const posts = await getDocs(q);
+  const q = query(collection(db, "posts"), where("flowers", "array-contains", flowerType))
+  const posts = await getDocs(q)
   console.log(posts.docs.map(doc => doc.data()))
   return posts.docs.map(doc => {
     const data = doc.data();
@@ -42,8 +42,23 @@ export const getFlowerPosts = async (flowerType: FlowerTypes): Promise<Post[]> =
   });
 }
 
-export async function getPost(postId : string) {
-  return null
+export const getPost = async (postId: string) : Promise<Post> => {
+  const docRef = doc(db, "posts", postId)
+  const postDoc = await getDoc(docRef);
+  if (postDoc.exists()) {
+    const postData = postDoc.data();
+    const post: Post = {
+      id: postDoc.id,
+      userid: postData.userid,
+      caption: postData.caption,
+      images: postData.images,
+      flowers: postData.flowers,
+      date: postData.date,
+    }
+    return post as Post
+  } else {
+    throw new Error("Post does not exist")
+  }
 }
 
 export async function getPostLikes(postId : string) {

@@ -4,26 +4,27 @@ import { getPost } from "@/lib/firebase";
 import { useEffect, useState } from "react";
 import { Post } from "@/lib/types";
 
-export default async function Page({ params }: { params: { postId: string } }) {
+export default function Page({ params }: { params : { postId : string }}) {
   const { postId } = params
-  const [postDoc, setPostDoc] = useState<Post | null>(null);
+  const [post, setPost] = useState<Post | null>(null);
 
   useEffect(() => {
-    // let p = getPost(postId)
-    let p = {
-      id: "aaa",
-      flower: "flowerType2",
-      user: "aaa"
-    }
-    setPostDoc(p)
-  })
-
-  // getDocFromCollection("posts", postId).then(doc => setPostDoc(doc))
+    (async () => {
+      try {
+        const post = await getPost(postId)
+        console.log(post)
+        setPost(post)
+      } catch (error) {
+        console.error(error)
+        // handle error here
+      }
+    })()
+  }, [postId])
 
   return (
     <div>
-      <div>a post.</div>
-      <div>{postDoc && postDoc.id}</div>
+      <div>a post</div>
+      <div>{post && post.id}</div>
     </div>
   )
 }
