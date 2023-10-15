@@ -3,7 +3,7 @@ import { FlowerTypes, Post } from '@/lib/types'
 import { getFlowerPosts } from '@/lib/firebase'
 import { Posts } from '@/components/posts'
 
-export default function Page({ params }: { params: { flower: string } }) {
+export default function Page({ params } : { params : { flower : string } }) {
   const { flower } = params
 
   // TODO: this function should be async in the future
@@ -29,7 +29,8 @@ export default function Page({ params }: { params: { flower: string } }) {
   )
 }
 
-// TODO: only allow flowers in the enum to be paths, rest are 404
 export function generateStaticParams() {
-  return Object.keys(FlowerTypes)
+  return Object.keys(FlowerTypes).map((f) => ({flower: f}))
 }
+
+export const dynamicParams = false
