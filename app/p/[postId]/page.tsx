@@ -7,6 +7,7 @@ import { Post } from "@/lib/types";
 export default function Page({ params }: { params : { postId : string }}) {
   const { postId } = params
   const [post, setPost] = useState<Post | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     (async () => {
@@ -18,13 +19,14 @@ export default function Page({ params }: { params : { postId : string }}) {
         console.error(error)
         // handle error here
       }
+      setLoading(false)
     })()
   }, [postId])
 
   return (
     <div>
       <div>a post</div>
-      <div>{post && post.id}</div>
+      <div>{loading ? "loading" : ( post ? post.id : "404" )}</div>
     </div>
   )
 }
