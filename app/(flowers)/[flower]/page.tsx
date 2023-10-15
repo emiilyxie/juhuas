@@ -1,6 +1,5 @@
 'use client'
 
-import Link from 'next/link'
 import { FlowerTypes, Post } from '@/lib/types'
 import { getFlowerPosts } from '@/lib/firebase'
 import { PostGrid } from '@/components/PostGrid'
@@ -8,38 +7,23 @@ import { useEffect, useState } from 'react'
 
 export default function Page({ params } : { params : { flower : FlowerTypes } }) {
   const { flower } = params
-  const [posts, setPosts] = useState<Post[]>([])
+  const [posts, setPosts] = useState<Post[] | null>(null)
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     (async () => {
-      const flowerPosts = await getFlowerPosts(flower)
-      setPosts(flowerPosts)
+      if (Object.keys(FlowerTypes).includes(flower)) {
+        const flowerPosts = await getFlowerPosts(flower)
+        setPosts(flowerPosts)
+      }
+      setLoading(false)
     })()
   }, [flower])
-  
-  // const flowerPosts : Post[] = [
-  //   {
-  //     id: "aaa",
-  //     flower: "flowerType1",
-  //     user: "aaa"
-  //   },
-  //   {
-  //     id: "bbb",
-  //     flower: "flowerType2",
-  //     user: "bbb"
-  //   },
-  // ]
 
   return (
     <div>
       <div>{flower}</div>
-      <PostGrid posts={posts} />
+      {loading ? "loading" : ( posts ? <PostGrid posts={posts} /> : "404" )}
     </div>
   )
 }
-
-export function generateStaticParams() {
-  return Object.keys(FlowerTypes).map((f) => ({flower: f}))
-}
-
-export const dynamicParams = false
