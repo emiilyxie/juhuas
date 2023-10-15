@@ -66,11 +66,11 @@ export const createPost = async (post: Post, files: File[]): Promise<DocumentRef
   })
 
   const storage = getStorage(app);
-  const postImagesRef = ref(storage, `posts/${postDoc.id}/images`);
 
-  for (const file of files) {
+  files.forEach(async (file, index) => {
+    const postImagesRef = ref(storage, `posts/${postDoc.id}/${index}`);
     await uploadBytes(postImagesRef, file);
-  }
+  });
 
   return postDoc
 }
