@@ -1,7 +1,7 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp, getApps } from "firebase/app";
 import { getFirestore, collection, getDocs, query, where, doc, getDoc, addDoc, DocumentReference, serverTimestamp, updateDoc, deleteDoc } from "firebase/firestore";
-import { deleteObject, getStorage, listAll, ref, uploadBytes } from "firebase/storage";
+import { deleteObject, getDownloadURL, getStorage, listAll, ref, uploadBytes } from "firebase/storage";
 import { FlowerTypes, Post } from '@/lib/types'
 
 const firebaseConfig = {
@@ -50,6 +50,17 @@ export const getPost = async (postId: string) : Promise<Post> => {
   } else {
     throw new Error("Post does not exist")
   }
+}
+
+export const getPostImages = async (postId: string): Promise<string[]> => {
+  const storage = getStorage(app);
+  const postImagesRef = ref(storage, `posts/${postId}`);
+  const imagesList = await listAll(postImagesRef);
+  const images = await Promise.all(imagesList.items.map(async (image) => {
+    const url = await getDownloadURL(image);
+    return url;
+  }));
+  return images;
 }
 
 export const createPost = async (post: Post, files: File[]): Promise<DocumentReference> => {
