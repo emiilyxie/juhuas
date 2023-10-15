@@ -30,7 +30,6 @@ export function PostForm(props : { edit : boolean, post : Post } ) {
       id: props.post.id,
       userid: "ktnkog5xAQKwIVOiN3aZ", // TODO: get the user id
       caption: caption,
-      images: imgs ? imgs.map((img) => img.name) : [], // TODO: generate the name
       flowers: flowers,
       date: Date.now(),
     }

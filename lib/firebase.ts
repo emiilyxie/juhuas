@@ -27,7 +27,6 @@ export const getFlowerPosts = async (flowerType: FlowerTypes): Promise<Post[]> =
       id: doc.id,
       userid: data.author,
       caption: data.caption,
-      images: data.photos,
       flowers: data.flowers,
       date: data.date,
     };
@@ -44,7 +43,6 @@ export const getPost = async (postId: string) : Promise<Post> => {
       id: postDoc.id,
       userid: postData.userid,
       caption: postData.caption,
-      images: postData.images,
       flowers: postData.flowers,
       date: postData.date,
     }
@@ -60,7 +58,6 @@ export const createPost = async (post: Post, files: File[]): Promise<DocumentRef
   const postDoc = await addDoc(postRef, {
     userid: post.userid,
     caption: post.caption,
-    images: post.images,
     flowers: post.flowers,
     date: serverTimestamp(),
   })

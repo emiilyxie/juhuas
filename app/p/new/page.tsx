@@ -7,7 +7,6 @@ export default function Page() {
     id: "",
     userid: "",
     caption: "",
-    images: [],
     flowers: [],
     date: Date.now(),
   }
