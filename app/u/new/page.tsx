@@ -20,3 +20,11 @@ export default function Page() {
 
   )
 }
+
+// login
+// sign in  form
+// sign in google button
+// link to create account
+
+// new acc page
+// on submit, create user

@@ -1,8 +1,9 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp, getApps } from "firebase/app";
-import { getFirestore, collection, getDocs, query, where, doc, getDoc, addDoc, DocumentReference, serverTimestamp, updateDoc, deleteDoc } from "firebase/firestore";
+import { getFirestore, collection, getDocs, query, where, doc, getDoc, addDoc, DocumentReference, serverTimestamp, updateDoc, deleteDoc, setDoc } from "firebase/firestore";
 import { deleteObject, getDownloadURL, getStorage, list, listAll, ref, uploadBytes } from "firebase/storage";
 import { FlowerTypes, Post, User } from '@/lib/types'
+import { GoogleAuthProvider, createUserWithEmailAndPassword, getAuth } from "firebase/auth";
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -16,6 +17,8 @@ const firebaseConfig = {
 
 export const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0];
 export const db = getFirestore(app);
+export const auth = getAuth(app)
+export const googleProvider = new GoogleAuthProvider()
 
 export const getFlowerPosts = async (flowerType: FlowerTypes): Promise<Post[]> => {
   const q = query(collection(db, "posts"), where("flowers", "array-contains", flowerType))
@@ -130,6 +133,12 @@ export const deletePost = async (post: Post): Promise<void> => {
 //   return likes.docs.map(doc => doc.data());
 // }
 
+export async function userExists(userId : string) : Promise<boolean> {
+  const docRef = doc(db, "users", userId)
+  const userDoc = await getDoc(docRef);
+  return userDoc.exists()
+}
+
 export async function getUser(userId : string) : Promise<User> {
   const docRef = doc(db, "users", userId)
   const userDoc = await getDoc(docRef);
@@ -165,17 +174,26 @@ export async function getUserPosts(userId : string) : Promise<Post[]> {
   });
 }
 
+export const createPasswordUser = async (userData: User, password: string): Promise<DocumentReference> => {
+
+  const auth = getAuth(app);
+  const authUser = await createUserWithEmailAndPassword(auth, userData.email, password);
+  
+  userData.id = authUser.user.uid
+  return await createUser(userData)
+};
+
 export const createUser = async (userData: User): Promise<DocumentReference> => {
-  const usersCollection = collection(db, "users")
-  let docRef = await addDoc(usersCollection, {
+  const ref = doc(db, "users", userData.id)
+  await setDoc(ref, {
     username: userData.username,
     email: userData.email,
     role: userData.role,
     bio: userData.bio,
     dateJoined: serverTimestamp(),
   })
-  return docRef
-};
+  return ref
+}
 
 export const editUser = async (userId: string, userData: Partial<User>): Promise<DocumentReference> => {
   const docRef = doc(db, "users", userId)

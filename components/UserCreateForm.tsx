@@ -6,14 +6,14 @@ import { useState } from "react";
 import TextInput from "./formElements/TextInput";
 import { ImageInput } from "./formElements/ImageInput";
 import FormButton from "./formElements/FormButton";
-import { createUser, editUserProfilePic } from "@/lib/firebase";
+import { createPasswordUser, editUserProfilePic } from "@/lib/firebase";
 
 export const UserCreateForm = (props : { user : User } ) => {
 
   const router = useRouter();
   const [username, setUsername] = useState(props.user.username);
   const [email, setEmail] = useState(props.user.email);
-  const [password, setPassword] = useState(""); // TODO: make this more secure
+  const [password, setPassword] = useState("") // TODO: input validation
   const [bio, setBio] = useState(props.user.bio);
   const [profilePic, setProfilePic] = useState<File | null>(null)
   const isValid = (
@@ -32,7 +32,7 @@ export const UserCreateForm = (props : { user : User } ) => {
       dateJoined: Date.now()
     }
 
-    let docRef = await createUser(userData)
+    let docRef = await createPasswordUser(userData, password)
     await editUserProfilePic(docRef.id, profilePic!)
 
     router.push(`/u/${docRef.id}`)
