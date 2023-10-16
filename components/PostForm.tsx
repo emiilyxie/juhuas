@@ -2,7 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import { ChangeEvent, useState } from 'react';
-import { createPost, deletePost, editPost } from "@/lib/firebase";
+import { createPost, deletePost, updatePost } from "@/lib/firebase";
 import { FlowerTypes, Post } from '@/lib/types';
 import { ImageInput } from './formElements/ImageInput';
 import { useUserData } from '@/lib/hooks';
@@ -26,6 +26,8 @@ export function PostCreateForm(props: {post: Post}){
         userid: userData.user?.id!,
         caption: caption,
         flowers: flowers,
+        likes: [],
+        comments: [],
         date: Date.now(),
       }
   
@@ -95,15 +97,17 @@ export function PostEditForm(props : { post : Post } ) {
   const handleSubmit = async () => {
 
     if (userData.user) {
-      const newPost : Post = {
+      const updatedPost : Post = {
         id: props.post.id,
         userid: userData.user.id,
         caption: caption,
         flowers: flowers,
+        likes: props.post.likes,
+        comments: props.post.comments,
         date: Date.now(),
       }
 
-      let docRef = await editPost(newPost);
+      let docRef = await updatePost(updatedPost);
       router.push(`/p/${docRef.id}`);
     }
   }

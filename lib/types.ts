@@ -3,7 +3,9 @@ export type Post = {
   userid: string,
   caption: string,
   flowers: FlowerTypes[],
-  date: number
+  likes: string[],
+  comments: Comment[],
+  date: number,
 }
 
 export type User = {
@@ -15,9 +17,11 @@ export type User = {
   dateJoined: number
 }
 
-export type PostLike = {
+export type Comment = {
+  id: string,
   postid: string,
   userid: string,
+  message: string,
 }
 
 export enum FlowerTypes {

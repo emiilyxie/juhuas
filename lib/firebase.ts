@@ -20,6 +20,8 @@ export const db = getFirestore(app);
 export const auth = getAuth(app)
 export const googleProvider = new GoogleAuthProvider()
 
+// TODO: make some helper functions to serialize data into types
+
 export const getFlowerPosts = async (flowerType: FlowerTypes): Promise<Post[]> => {
   const q = query(collection(db, "posts"), where("flowers", "array-contains", flowerType))
   const posts = await getDocs(q)
@@ -31,6 +33,8 @@ export const getFlowerPosts = async (flowerType: FlowerTypes): Promise<Post[]> =
       userid: data.author,
       caption: data.caption,
       flowers: data.flowers,
+      likes: data.likes || [],
+      comments: data.comments || [],
       date: data.date,
     };
     return post as Post;
@@ -47,6 +51,8 @@ export const getPost = async (postId: string) : Promise<Post> => {
       userid: postData.userid,
       caption: postData.caption,
       flowers: postData.flowers,
+      likes: postData.likes || [],
+      comments: postData.comments || [],
       date: postData.date,
     }
     return post as Post
@@ -99,13 +105,22 @@ export const createPost = async (post: Post, files: File[]): Promise<DocumentRef
   return postDoc
 }
 
-export const editPost = async (post: Post): Promise<DocumentReference> => {
+export const updatePost = async (post: Post): Promise<DocumentReference> => {
   const docRef = doc(db, "posts", post.id);
   await updateDoc(docRef, {
     caption: post.caption,
     flowers: post.flowers,
+    likes: post.likes,
+    comments: post.comments,
   });
   return docRef;
+}
+
+export const likePost = async (postId: string, userId: string): Promise<void> => {
+  const docRef = doc(db, "posts", postId);
+  await updateDoc(docRef, {
+    likes: serverTimestamp(),
+  });
 }
 
 export const deletePost = async (post: Post): Promise<void> => {
@@ -168,6 +183,8 @@ export async function getUserPosts(userId : string) : Promise<Post[]> {
       userid: data.author,
       caption: data.caption,
       flowers: data.flowers,
+      likes: data.likes || [],
+      comments: data.comments || [],
       date: data.date,
     };
     return post as Post;

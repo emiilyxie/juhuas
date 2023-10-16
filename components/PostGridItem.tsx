@@ -1,11 +1,11 @@
 import { getPostImages, getPostThumbnail } from '@/lib/firebase';
 import { Post } from '@/lib/types';
-import React, { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import Image from 'next/image';
 
 const PostGridItem = (props: { post: Post }) => {
   const { post } = props
-  const [img, setImg] = React.useState<string | null>(null)
+  const [img, setImg] = useState<string | null>(null)
 
   useEffect(() => {
     (async () => {

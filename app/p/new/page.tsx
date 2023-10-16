@@ -8,6 +8,8 @@ export default function Page() {
     userid: "",
     caption: "",
     flowers: [],
+    likes: [],
+    comments: [],
     date: Date.now(),
   }
 
