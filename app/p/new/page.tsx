@@ -1,4 +1,4 @@
-import { PostForm } from "@/components/PostForm"
+import { PostCreateForm } from "@/components/PostForm"
 import { Post } from "@/lib/types"
 
 export default function Page() {
@@ -14,7 +14,7 @@ export default function Page() {
   return (
     <>
       <div>new</div>
-      <div><PostForm edit={false} post={newPost}/></div>
+      <div><PostCreateForm post={newPost}/></div>
     </>
 
   )

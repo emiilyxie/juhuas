@@ -1,6 +1,6 @@
 'use client'
 
-import { PostForm } from "@/components/PostForm"
+import { PostEditForm } from "@/components/PostForm"
 import { getPost } from "@/lib/firebase";
 import { Post } from "@/lib/types"
 import { useEffect, useState } from "react";
@@ -29,7 +29,7 @@ export default function Page({ params } : { params : { postId : string }}) {
     <>
       <div>edit post</div>
       { loading ? "loading" :
-        post ? <div><PostForm edit={true} post={post}/></div> : 
+        post ? <div><PostEditForm post={post}/></div> : 
         "404"
       }
     </>
