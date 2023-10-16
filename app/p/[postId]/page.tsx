@@ -64,7 +64,8 @@ export default function Page({ params }: { params : { postId : string }}) {
         <div>
           <div>{post.caption}</div>
           <Link href={`../u/${post.userid}`}>author</Link>
-          <Link href={`${post.id}/edit`}>edit post</Link>
+          { userData.user?.id == post.userid &&
+            <Link href={`${post.id}/edit`}>edit post</Link>}
           { userData.user && 
             (liked ? 
             <FormButton onSubmit={unlikePost} label="remove like" valid={true} /> : 

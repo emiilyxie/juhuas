@@ -1,16 +1,15 @@
 'use client'
 
-import { UserContext } from "@/lib/contexts";
 import { auth } from "@/lib/firebase";
+import { useUserData } from "@/lib/hooks";
 import { signOut } from "firebase/auth";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useContext } from "react";
 
 
 const Navbar = () => {
 
-  let { user, authUser } = useContext(UserContext)
+  let userData = useUserData()
   let router = useRouter()
 
   const onLogout = async () => {
@@ -27,11 +26,19 @@ const Navbar = () => {
         <li>
           <Link href={"/"}>Home</Link>
         </li>
+
         <li>
-          {user ? (
-            <button onClick={onLogout}>Logout</button>
+          {userData.user ? (
+            <div>
+              <Link href={`/u/${userData.user.id}`}>Profile</Link>
+              <Link href={"/p/new"}>New Post</Link>
+              <button onClick={onLogout}>Logout</button>
+            </div>
           ) : (
+            <div>
             <Link href="/login">Login</Link>
+            <Link href="/u/new">Create Account</Link>
+            </div>
           )}
         </li>
       </ul>

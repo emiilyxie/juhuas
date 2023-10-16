@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { Post, User } from "@/lib/types";
 import Link from "next/link";
 import { PostGrid } from "@/components/PostGrid";
+import { useUserData } from "@/lib/hooks";
 
 export default function Page({ params }: { params : { userId : string }}) {
   const { userId } = params
@@ -12,6 +13,7 @@ export default function Page({ params }: { params : { userId : string }}) {
   const [loadingUser, setLoadingUser] = useState(true);
   const [posts, setPosts] = useState<Post[]>([]);
   const [loadingPosts, setLoadingPosts] = useState(true);
+  const userData = useUserData()
 
   useEffect(() => {
     (async () => {
@@ -45,7 +47,8 @@ export default function Page({ params }: { params : { userId : string }}) {
         <div>
           <div>{user.username}</div>
           <div>{user.bio}</div>
-          <Link href={`${user.id}/edit`}>edit user</Link>
+          { userData.user?.id == userId &&
+            <Link href={`${user.id}/edit`}>edit user</Link>}
 
           <div>posts</div>
           {
