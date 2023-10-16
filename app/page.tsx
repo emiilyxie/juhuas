@@ -9,6 +9,7 @@ export default function Home() {
       { Object.keys(FlowerTypes).map(f => <Link href={f} key={f}><div>{f}</div></Link>) }
       <Link href="/login">login</Link>
       <Link href="/p/new">new post</Link>
+      <Link href="/u/new">new user</Link>
     </>
   )
 }

@@ -146,6 +146,18 @@ export async function getUserPosts(userId : string) : Promise<Post[]> {
   });
 }
 
+export const createUser = async (userData: User): Promise<DocumentReference> => {
+  const usersCollection = collection(db, "users")
+  let docRef = await addDoc(usersCollection, {
+    username: userData.username,
+    email: userData.email,
+    role: userData.role,
+    bio: userData.bio,
+    dateJoined: serverTimestamp(),
+  })
+  return docRef
+};
+
 export const editUser = async (userId: string, userData: Partial<User>): Promise<DocumentReference> => {
   const docRef = doc(db, "users", userId)
   await updateDoc(docRef, userData)
