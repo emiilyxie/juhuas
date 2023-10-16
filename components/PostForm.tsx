@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation';
 import { ChangeEvent, useState } from 'react';
 import { createPost, deletePost, editPost } from "@/lib/firebase";
 import { FlowerTypes, Post } from '@/lib/types';
-import { ImageInput } from './ImageInput';
+import { ImageInput } from './formElements/ImageInput';
 
 export function PostForm(props : { edit : boolean, post : Post } ) {
   const router = useRouter();

@@ -1,39 +1,60 @@
 'use client'
 
-import { getUser } from "@/lib/firebase";
+import { getUser, getUserPosts } from "@/lib/firebase";
 import { useEffect, useState } from "react";
-import { User } from "@/lib/types";
+import { Post, User } from "@/lib/types";
 import Link from "next/link";
+import { PostGrid } from "@/components/PostGrid";
 
 export default function Page({ params }: { params : { userId : string }}) {
   const { userId } = params
   const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [loadingUser, setLoadingUser] = useState(true);
+  const [posts, setPosts] = useState<Post[]>([]);
+  const [loadingPosts, setLoadingPosts] = useState(true);
 
   useEffect(() => {
     (async () => {
       try {
         const user = await getUser(userId)
         setUser(user)
+
+        try {
+          const userPosts = await getUserPosts(userId)
+          setPosts(userPosts)
+        } catch (error) {
+          console.error(error)
+          // handle error here
+        }
+        setLoadingPosts(false)
       } catch (error) {
         console.error(error)
         // handle error here
       }
-      setLoading(false)
+      setLoadingUser(false)
     })()
   }, [userId])
 
   return (
     <div>
       <div>a user</div>
-      <div>{loading ? "loading" : 
-      ( user ? 
+      <div>
+      {
+        loadingUser ? "loadingUser" : 
+        (user ? 
         <div>
           <div>{user.username}</div>
           <div>{user.bio}</div>
           <Link href={`${user.id}/edit`}>edit user</Link>
+
+          <div>posts</div>
+          {
+            loadingPosts ? "loadingPosts" :
+            <PostGrid posts={posts} />
+          }
         </div> : 
-        "404" )}</div>
+        "404" )
+      }</div>
     </div>
   )
 }
