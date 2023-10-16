@@ -19,7 +19,7 @@ export default function Page({ params } : { params : { userId : string }}) {
     if (userData.user?.id == userId) {
       setAuthorized(true)
     }
-  }, [userData.loading])
+  }, [userData])
 
   useEffect(() => {
     (async () => {
