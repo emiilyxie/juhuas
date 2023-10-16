@@ -2,7 +2,7 @@
 import { initializeApp, getApps } from "firebase/app";
 import { getFirestore, collection, getDocs, query, where, doc, getDoc, addDoc, DocumentReference, serverTimestamp, updateDoc, deleteDoc } from "firebase/firestore";
 import { deleteObject, getDownloadURL, getStorage, listAll, ref, uploadBytes } from "firebase/storage";
-import { FlowerTypes, Post } from '@/lib/types'
+import { FlowerTypes, Post, User } from '@/lib/types'
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -36,11 +36,11 @@ export const getFlowerPosts = async (flowerType: FlowerTypes): Promise<Post[]> =
 
 export const getPost = async (postId: string) : Promise<Post> => {
   const docRef = doc(db, "posts", postId)
-  const postDoc = await getDoc(docRef);
-  if (postDoc.exists()) {
-    const postData = postDoc.data();
+  const userDoc = await getDoc(docRef);
+  if (userDoc.exists()) {
+    const postData = userDoc.data();
     const post: Post = {
-      id: postDoc.id,
+      id: userDoc.id,
       userid: postData.userid,
       caption: postData.caption,
       flowers: postData.flowers,
@@ -105,11 +105,63 @@ export const deletePost = async (post: Post): Promise<void> => {
   }
 }
 
-export async function getPostLikes(postId : string) {
-  const q = query(collection(db, "posts", postId, "likes"));
-  const likes = await getDocs(q);
-  return likes.docs.map(doc => doc.data());
+// export async function getPostLikes(postId : string) {
+//   const q = query(collection(db, "posts", postId, "likes"));
+//   const likes = await getDocs(q);
+//   return likes.docs.map(doc => doc.data());
+// }
+
+export async function getUser(userId : string) : Promise<User> {
+  const docRef = doc(db, "users", userId)
+  const userDoc = await getDoc(docRef);
+  if (userDoc.exists()) {
+    const userData = userDoc.data();
+    const user: User = {
+      id: userDoc.id,
+      username: userData.username,
+      email: userData.email || '',
+      role: userData.role,
+      bio: userData.bio || '',
+      dateJoined: userData.dateJoined,
+    }
+    return user as User
+  } else {
+    throw new Error("User does not exist")
+  }
 }
+
+export async function getUserPosts(userId : string) : Promise<Post[]> {
+  const q = query(collection(db, "posts"), where("userid", "==", userId));
+  const posts = await getDocs(q);
+  return posts.docs.map(doc => {
+    const data = doc.data();
+    const post: Post = {
+      id: doc.id,
+      userid: data.author,
+      caption: data.caption,
+      flowers: data.flowers,
+      date: data.date,
+    };
+    return post as Post;
+  });
+}
+
+export const editUser = async (userId: string, userData: Partial<User>): Promise<DocumentReference> => {
+  const docRef = doc(db, "users", userId)
+  await updateDoc(docRef, userData)
+  return docRef
+}
+
+export const editUserProfilePic = async (userId: string, file: File): Promise<void> => {
+  const storage = getStorage(app)
+  const profilePicRef = ref(storage, `users/${userId}/profilePic`)
+  await uploadBytes(profilePicRef, file)
+}
+
+export const deleteUser = async (userId: string): Promise<void> => {
+  const docRef = doc(db, "users", userId)
+  await deleteDoc(docRef)
+};
 
 // planning and structuring
 

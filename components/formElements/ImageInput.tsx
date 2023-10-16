@@ -1,6 +1,5 @@
 import { useState } from "react";
 
-
 export function ImageInput(props : {onSelect : (img : File) => void}) {
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
 

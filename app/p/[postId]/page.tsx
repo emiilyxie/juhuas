@@ -30,6 +30,7 @@ export default function Page({ params }: { params : { postId : string }}) {
       ( post ? 
         <div>
           <div>{post.caption}</div>
+          <Link href={`../u/${post.userid}`}>author</Link>
           <Link href={`${post.id}/edit`}>edit post</Link>
         </div> : 
         "404" )}</div>

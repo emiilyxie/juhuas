@@ -12,8 +12,7 @@ export type User = {
   email: string,
   role: UserRole,
   bio: string,
-  profilePic: string,
-  dateJoined: Date
+  dateJoined: number
 }
 
 export type PostLike = {
