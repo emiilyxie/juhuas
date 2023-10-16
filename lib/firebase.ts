@@ -1,7 +1,7 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp, getApps } from "firebase/app";
 import { getFirestore, collection, getDocs, query, where, doc, getDoc, addDoc, DocumentReference, serverTimestamp, updateDoc, deleteDoc } from "firebase/firestore";
-import { deleteObject, getDownloadURL, getStorage, listAll, ref, uploadBytes } from "firebase/storage";
+import { deleteObject, getDownloadURL, getStorage, list, listAll, ref, uploadBytes } from "firebase/storage";
 import { FlowerTypes, Post, User } from '@/lib/types'
 
 const firebaseConfig = {
@@ -63,6 +63,19 @@ export const getPostImages = async (postId: string): Promise<string[]> => {
   return images;
 }
 
+export const getPostThumbnail = async (postId: string): Promise<string> => {
+  const storage = getStorage(app);
+  const postImagesRef = ref(storage, `posts/${postId}/thumbnails`)
+  const imagesList = await list(postImagesRef, { maxResults: 1 })
+  if (imagesList.items.length > 0) {
+    const url = await getDownloadURL(imagesList.items[0]);
+    console.log(url)
+    return url;
+  } else {
+    throw new Error("Post does not have a thumbnail")
+  }
+}
+
 export const createPost = async (post: Post, files: File[]): Promise<DocumentReference> => {
   console.log("creating post")
   const postRef = collection(db, "posts");
@@ -98,10 +111,16 @@ export const deletePost = async (post: Post): Promise<void> => {
 
   const storage = getStorage(app);
   const postImagesRef = ref(storage, `posts/${post.id}`);
+  const thumbnailsRef = ref(storage, `posts/${post.id}/thumbnails`);
   const imagesList = await listAll(postImagesRef);
+  const thumbnailsList = await listAll(thumbnailsRef);
 
   for (const image of imagesList.items) {
     await deleteObject(image);
+  }
+
+  for (const thumbnail of thumbnailsList.items) {
+    await deleteObject(thumbnail);
   }
 }
 
