@@ -22,6 +22,25 @@ export const googleProvider = new GoogleAuthProvider()
 
 // TODO: make some helper functions to serialize data into types
 
+export const getPosts = async (): Promise<Post[]> => {
+  const q = query(collection(db, "posts"))
+  const posts = await getDocs(q)
+  console.log(posts.docs.map(doc => doc.data()))
+  return posts.docs.map(doc => {
+    const data = doc.data();
+    const post: Post = {
+      id: doc.id,
+      userid: data.author,
+      caption: data.caption,
+      flowers: data.flowers,
+      likes: data.likes || [],
+      comments: data.comments || [],
+      date: data.date,
+    };
+    return post as Post;
+  });
+}
+
 export const getFlowerPosts = async (flowerType: FlowerTypes): Promise<Post[]> => {
   const q = query(collection(db, "posts"), where("flowers", "array-contains", flowerType))
   const posts = await getDocs(q)
