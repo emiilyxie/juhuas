@@ -1,24 +1,29 @@
 'use client'
 
-import { updatePost, getPost } from "@/lib/firebase";
+import { updatePost, getPost, getPostComments, addPostComment } from "@/lib/firebase";
 import { useEffect, useState } from "react";
-import { Post } from "@/lib/types";
+import { Comment, Post } from "@/lib/types";
 import Link from "next/link";
 import { useUserData } from "@/lib/hooks";
 import FormButton from "@/components/formElements/FormButton";
+import TextInput from "@/components/formElements/TextInput";
 
 export default function Page({ params }: { params : { postId : string }}) {
   const { postId } = params
   const [post, setPost] = useState<Post | null>(null);
   const [loading, setLoading] = useState(true);
   const [liked, setLiked] = useState(false)
+  const [comments, setComments] = useState<Comment[]>([])
+  const [currentComment, setCurrentComment] = useState("")
   let userData = useUserData()
 
   useEffect(() => {
     (async () => {
       try {
         const post = await getPost(postId)
+        const comments = await getPostComments(postId)
         setPost(post)
+        setComments(comments)
         if (userData.user && post) {
           setLiked(post.likes.includes(userData.user.id))
         }
@@ -56,6 +61,22 @@ export default function Page({ params }: { params : { postId : string }}) {
     }
   }
 
+  const addComment = async () => {
+    if (userData.user && post) {
+      let comment : Comment = {
+        id: "",
+        userid: userData.user.id,
+        postid: post.id,
+        message: currentComment,
+        date: Date.now()
+      }
+      post.comments.push(comment)
+      addPostComment(comment)
+      setComments([...comments, comment])
+      setCurrentComment("")
+    }
+  }
+
   return (
     <div>
       <div>a post</div>
@@ -67,9 +88,17 @@ export default function Page({ params }: { params : { postId : string }}) {
           { userData.user?.id == post.userid &&
             <Link href={`${post.id}/edit`}>edit post</Link>}
           { userData.user && 
-            (liked ? 
+            <>{liked ? 
             <FormButton onSubmit={unlikePost} label="remove like" valid={true} /> : 
-            <FormButton onSubmit={likePost} label="like" valid={true} />)
+            <FormButton onSubmit={likePost} label="like" valid={true} />}
+            <TextInput onValueChanged={setCurrentComment} label="comment" placeholder="comment" value={currentComment} />
+            <FormButton onSubmit={addComment} label="comment" valid={currentComment != ""} />
+            {
+              comments.map((comment) => {
+                return <div key={comment.date}>{comment.message}</div>
+              })
+            }
+            </>
           }
         </div> : 
         "404" )}</div>

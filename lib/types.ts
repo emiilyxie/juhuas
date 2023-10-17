@@ -22,6 +22,7 @@ export type Comment = {
   postid: string,
   userid: string,
   message: string,
+  date: number,
 }
 
 export enum FlowerTypes {

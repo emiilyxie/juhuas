@@ -1,8 +1,8 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp, getApps } from "firebase/app";
-import { getFirestore, collection, getDocs, query, where, doc, getDoc, addDoc, DocumentReference, serverTimestamp, updateDoc, deleteDoc, setDoc } from "firebase/firestore";
+import { getFirestore, collection, getDocs, query, where, doc, getDoc, addDoc, DocumentReference, serverTimestamp, updateDoc, deleteDoc, setDoc, or, orderBy } from "firebase/firestore";
 import { deleteObject, getDownloadURL, getStorage, list, listAll, ref, uploadBytes } from "firebase/storage";
-import { FlowerTypes, Post, User } from '@/lib/types'
+import { Comment, FlowerTypes, Post, User } from '@/lib/types'
 import { GoogleAuthProvider, createUserWithEmailAndPassword, getAuth } from "firebase/auth";
 
 const firebaseConfig = {
@@ -116,11 +116,32 @@ export const updatePost = async (post: Post): Promise<DocumentReference> => {
   return docRef;
 }
 
-export const likePost = async (postId: string, userId: string): Promise<void> => {
-  const docRef = doc(db, "posts", postId);
-  await updateDoc(docRef, {
-    likes: serverTimestamp(),
+export const getPostComments = async (postId: string): Promise<Comment[]> => {
+  const q = query(collection(db, "posts", postId, "comments"), orderBy("date", "asc"));
+  const comments = await getDocs(q);
+  return comments.docs.map(doc => {
+    const data = doc.data();
+    const comment: Comment = {
+      id: doc.id,
+      userid: data.userid,
+      postid: data.postid,
+      message: data.message,
+      date: data.date,
+    };
+    return comment as Comment;
   });
+}
+
+export const addPostComment = async (comment: Comment): Promise<DocumentReference> => {
+  const docRef = doc(db, "posts", comment.postid);
+  const commentRef = collection(docRef, "comments");
+  const commentDoc = await addDoc(commentRef, {
+    userid: comment.userid,
+    postid: comment.postid,
+    message: comment.message,
+    date: serverTimestamp(),
+  });
+  return commentDoc;
 }
 
 export const deletePost = async (post: Post): Promise<void> => {
