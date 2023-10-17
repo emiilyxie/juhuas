@@ -8,3 +8,7 @@
   height: 300px;
   position: relative;
 }
+
+.second {
+  flex-grow: 1.61;
+}

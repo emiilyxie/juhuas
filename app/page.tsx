@@ -22,8 +22,13 @@ export default function Home() {
 
   return (
     <div className={styles.main}>
-      <Sidebar><div></div></Sidebar>
-      <div>{loading ? "loading" : ( posts ? <PostGrid posts={posts} /> : "404" )}</div>
+      <Sidebar>
+
+      </Sidebar>
+
+      <div className={styles.second}>
+        {loading ? "loading" : ( posts ? <PostGrid posts={posts} /> : "404" )}
+      </div>
     </div>
   )
 }
