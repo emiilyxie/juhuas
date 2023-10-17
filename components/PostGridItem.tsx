@@ -1,11 +1,12 @@
-import { getPostImages, getPostThumbnail } from '@/lib/firebase';
+import { getPostThumbnail } from '@/lib/firebase';
 import { Post } from '@/lib/types';
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
+import layoutStyles from '@/app/layout.module.css'
 
 const PostGridItem = (props: { post: Post }) => {
   const { post } = props
-  const [img, setImg] = useState<string | null>(null)
+  const [img, setImg] = useState<string>("/placeholder.jpeg")
 
   useEffect(() => {
     (async () => {
@@ -21,14 +22,9 @@ const PostGridItem = (props: { post: Post }) => {
 
   return (
     <div>
-      <p>{post.caption}</p>
-      {
-      <div style={{width: '300px', height: '300px', position: 'relative'}}>
-        { img ?
+      <div className={layoutStyles.imgWrapper}>
         <Image src={img} alt={post.caption} style={{objectFit: "cover"}} fill sizes='30vw'/> :
-        <Image src='/mirrorsault.png' alt={post.caption} style={{objectFit: "cover"}} fill sizes='30vw' />
-        }
-      </div>}
+      </div>
     </div>
   );
 };
