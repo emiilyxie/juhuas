@@ -3,9 +3,9 @@
 import { getUser, getUserPosts } from "@/lib/firebase";
 import { useEffect, useState } from "react";
 import { Post, User } from "@/lib/types";
-import Link from "next/link";
 import { PostGrid } from "@/components/PostGrid";
-import { useUserData } from "@/lib/hooks";
+import Sidebar from "@/components/Sidebar";
+import layoutStyle from "@/app/layout.module.css"
 
 export default function Page({ params }: { params : { userId : string }}) {
   const { userId } = params
@@ -13,7 +13,6 @@ export default function Page({ params }: { params : { userId : string }}) {
   const [loadingUser, setLoadingUser] = useState(true);
   const [posts, setPosts] = useState<Post[]>([]);
   const [loadingPosts, setLoadingPosts] = useState(true);
-  const userData = useUserData()
 
   useEffect(() => {
     (async () => {
@@ -38,26 +37,26 @@ export default function Page({ params }: { params : { userId : string }}) {
   }, [userId])
 
   return (
-    <div>
-      <div>a user</div>
-      <div>
+    <div className={layoutStyle.main}>
+      <Sidebar>
       {
-        loadingUser ? "loadingUser" : 
-        (user ? 
+        loadingUser ? 
+        "loadingUser" : 
+        user ? 
         <div>
           <div>{user.username}</div>
           <div>{user.bio}</div>
-          { userData.user?.id == userId &&
-            <Link href={`/u/edit`}>edit user</Link>}
-
-          <div>posts</div>
-          {
-            loadingPosts ? "loadingPosts" :
-            <PostGrid posts={posts} />
-          }
         </div> : 
-        "404" )
-      }</div>
+        "404" 
+      }
+      </Sidebar>
+
+      <div>
+        {
+          loadingPosts ? "loading posts" :
+          <PostGrid posts={posts} />
+        }
+        </div>
     </div>
   )
 }
