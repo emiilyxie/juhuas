@@ -1,17 +1,16 @@
 'use client'
 
-import Link from 'next/link'
-import { FlowerTypes, Post } from "@/lib/types";
+import { Post } from "@/lib/types";
 import { useEffect, useState } from 'react';
 import { getPosts } from '@/lib/firebase';
-import { useUserData } from '@/lib/hooks';
 import { PostGrid } from '@/components/PostGrid';
+import styles from "@/app/layout.module.css"
+import Sidebar from "@/components/Sidebar";
 
 export default function Home() {
 
   const [posts, setPosts] = useState<Post[] | null>(null)
   const [loading, setLoading] = useState(true)
-  let userData  = useUserData
 
   useEffect(() => {
     (async () => {
@@ -22,16 +21,9 @@ export default function Home() {
   }, [])
 
   return (
-    <div>
-      <div>juhua</div>
-      {loading ? "loading" : ( posts ? <PostGrid posts={posts} /> : "404" )}
+    <div className={styles.main}>
+      <Sidebar><div></div></Sidebar>
+      <div>{loading ? "loading" : ( posts ? <PostGrid posts={posts} /> : "404" )}</div>
     </div>
   )
-    
-  // return (
-  //   <>
-  //     <div>hi welcome</div>
-  //     { Object.keys(FlowerTypes).map(f => <Link href={f} key={f}><div>{f}</div></Link>) }
-  //   </>
-  // )
 }

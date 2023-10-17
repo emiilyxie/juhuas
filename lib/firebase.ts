@@ -3,7 +3,7 @@ import { initializeApp, getApps } from "firebase/app";
 import { getFirestore, collection, getDocs, query, where, doc, getDoc, addDoc, DocumentReference, serverTimestamp, updateDoc, deleteDoc, setDoc, or, orderBy } from "firebase/firestore";
 import { deleteObject, getDownloadURL, getStorage, list, listAll, ref, uploadBytes } from "firebase/storage";
 import { Comment, FlowerTypes, Post, User } from '@/lib/types'
-import { GoogleAuthProvider, createUserWithEmailAndPassword, getAuth } from "firebase/auth";
+import { GoogleAuthProvider, createUserWithEmailAndPassword, getAuth, signOut } from "firebase/auth";
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -232,7 +232,6 @@ export async function getUserPosts(userId : string) : Promise<Post[]> {
 }
 
 export const createPasswordUser = async (userData: User, password: string): Promise<DocumentReference> => {
-
   const auth = getAuth(app);
   const authUser = await createUserWithEmailAndPassword(auth, userData.email, password);
   
@@ -268,6 +267,15 @@ export const deleteUser = async (userId: string): Promise<void> => {
   const docRef = doc(db, "users", userId)
   await deleteDoc(docRef)
 };
+
+export const logOutUser = async () => {
+  signOut(auth).then(() => {
+    console.log("signed out")
+  }).catch((error) => {
+    console.error(error)
+    return error
+  })
+}
 
 // planning and structuring
 
