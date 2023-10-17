@@ -37,7 +37,7 @@ export default function Page() {
           dateJoined: Date.now(),
         }
         createUser(newUser)
-        router.push(`/u/${newUser.id}/edit`)
+        router.push(`/u/edit`)
       } else {
         router.push(`/u/${result.user.uid}`)
       }

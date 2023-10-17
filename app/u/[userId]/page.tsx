@@ -48,7 +48,7 @@ export default function Page({ params }: { params : { userId : string }}) {
           <div>{user.username}</div>
           <div>{user.bio}</div>
           { userData.user?.id == userId &&
-            <Link href={`${user.id}/edit`}>edit user</Link>}
+            <Link href={`/u/edit`}>edit user</Link>}
 
           <div>posts</div>
           {
