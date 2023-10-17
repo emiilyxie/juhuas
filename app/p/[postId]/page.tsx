@@ -24,9 +24,6 @@ export default function Page({ params }: { params : { postId : string }}) {
         const comments = await getPostComments(postId)
         setPost(post)
         setComments(comments)
-        if (userData.user && post) {
-          setLiked(post.likes.includes(userData.user.id))
-        }
       } catch (error) {
         console.error(error)
         // handle error here
@@ -39,7 +36,7 @@ export default function Page({ params }: { params : { postId : string }}) {
     if (userData.user && post) {
       setLiked(post.likes.includes(userData.user.id))
     }
-  }, [userData.user])
+  }, [userData, post])
 
   const likePost = async () => {
     if (userData.user && post) {
