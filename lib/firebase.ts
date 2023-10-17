@@ -23,7 +23,7 @@ export const googleProvider = new GoogleAuthProvider()
 // TODO: make some helper functions to serialize data into types
 
 export const getPosts = async (): Promise<Post[]> => {
-  const q = query(collection(db, "posts"))
+  const q = query(collection(db, "posts"), orderBy("date", "desc"))
   const posts = await getDocs(q)
   console.log(posts.docs.map(doc => doc.data()))
   return posts.docs.map(doc => {
@@ -136,7 +136,7 @@ export const updatePost = async (post: Post): Promise<DocumentReference> => {
 }
 
 export const getPostComments = async (postId: string): Promise<Comment[]> => {
-  const q = query(collection(db, "posts", postId, "comments"), orderBy("date", "asc"));
+  const q = query(collection(db, "posts", postId, "comments"), orderBy("date", "desc"));
   const comments = await getDocs(q);
   return comments.docs.map(doc => {
     const data = doc.data();
