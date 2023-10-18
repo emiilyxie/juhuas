@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import TextInput from "./formElements/TextInput";
 import { ImageInput } from "./formElements/ImageInput";
-import { SubmitButton } from "./formElements/FormButton";
+import { PrimaryButton } from "./formElements/FormButton";
 import { createPasswordUser, editUserProfilePic } from "@/lib/firebase";
 import FormLayout from "./formElements/FormLayout";
 import formStyle from "@/components/formElements/Form.module.css"
@@ -46,7 +46,7 @@ export const UserCreateForm = (props : { user : User } ) => {
       <TextInput onValueChanged={setEmail} value={email} placeholder={"email"} label="Email" />
       <TextInput onValueChanged={setPassword} value={password} placeholder={"password"} label="Password" />
       <ImageInput onSelect={setProfilePic} />
-      <SubmitButton onSubmit={handleSubmit} valid={isValid} label="Create New Account" />
+      <PrimaryButton onSubmit={handleSubmit} valid={isValid} label="Create New Account" />
     </FormLayout>
   );
 };

@@ -1,6 +1,6 @@
 import formStyles from "@/components/formElements/Form.module.css"
 
-export const SubmitButton = (props: { 
+export const PrimaryButton = (props: { 
   onSubmit: () => void, 
   label: string,
   valid: boolean

@@ -6,6 +6,7 @@ import Link from "next/link";
 import { logOutUser } from "@/lib/firebase";
 import { useRouter } from "next/navigation";
 import styles from "@/components/Sidebar.module.css"
+import { PrimaryButton } from './formElements/FormButton';
 
 export default function Sidebar({
   children
@@ -33,8 +34,8 @@ export default function Sidebar({
         userData.user ? 
           (
             <div className={styles.second}>
+              <Link href={"/p/new"}></Link>
               <Link href={`/u/${userData.user.id}`}>Profile</Link>
-              <Link href={"/p/new"}>New Post</Link>
               <button onClick={onLogout}>Logout</button>
             </div>
           ) : (

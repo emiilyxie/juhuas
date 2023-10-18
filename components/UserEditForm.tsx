@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import TextInput from "./formElements/TextInput";
 import { ImageInput } from "./formElements/ImageInput";
-import { SecondaryButton, SubmitButton } from "./formElements/FormButton";
+import { SecondaryButton, PrimaryButton } from "./formElements/FormButton";
 import { deleteUser, editUser, editUserProfilePic } from "@/lib/firebase";
 import FormLayout from "./formElements/FormLayout";
 import formStyle from "@/components/formElements/Form.module.css"
@@ -53,7 +53,7 @@ export const UserEditForm = (props : { user : User } ) => {
       <TextInput onValueChanged={setEmail} value={email} placeholder={"email"} label="Email" />
       <TextInput onValueChanged={setBio} value={bio} placeholder={"bio"} label="Bio" />
       <ImageInput onSelect={setProfilePic} />
-      <SubmitButton onSubmit={handleSubmit} valid={isValid} label="Save Changes" />
+      <PrimaryButton onSubmit={handleSubmit} valid={isValid} label="Save Changes" />
       <SecondaryButton onSubmit={handleDelete} valid={true} label="Delete Account" />
     </FormLayout>
   );
