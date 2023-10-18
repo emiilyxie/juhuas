@@ -26,19 +26,24 @@
   border-radius: var(--border-radius);
 }
 
-.submitButton {
+.button {
   padding: 1em;
-  background-color: rgb(var(--foreground-rgb));
-  color: white;
   border-radius: 20px;
   width: 100%;
+  max-width: 20em;
+}
+
+.submitButton {
+  background-color: rgb(var(--foreground-rgb));
+  color: white;
+}
+
+.outlineButton {
+  border: 2px solid rgb(var(--foreground-rgb));
 }
 
 .signInGoogleButton {
-  padding: 1em;
   border: 2px solid rgb(var(--foreground-rgb));
-  border-radius: 20px;
-  width: 100%;
 }
 
 .textInputContainer {

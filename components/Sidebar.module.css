@@ -3,7 +3,8 @@
   flex-direction: column;
   justify-content: space-between;
   flex: 1 1 0;
-  margin: 1em 3em;
+  margin: 0em 3em;
+  height: 100vh;
 }
 
 .logo {
@@ -12,7 +13,11 @@
 }
 
 .second {
-  margin-bottom: 3em;
+  margin-bottom: 2em;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+}
+
+.second > *{
+  flex: 1 1 0;
 }

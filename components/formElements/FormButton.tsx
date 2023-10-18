@@ -6,7 +6,19 @@ export const PrimaryButton = (props: {
   valid: boolean
 }) => {
   return (
-    <button className={formStyles.submitButton} type="submit" disabled={!props.valid} onClick={props.onSubmit}>
+    <button className={`${formStyles.button} ${formStyles.submitButton}`} type="submit" disabled={!props.valid} onClick={props.onSubmit}>
+      {props.label}
+    </button>
+  )
+}
+
+export const PrimaryOutlineButton = (props: { 
+  onSubmit: () => void, 
+  label: string,
+  valid: boolean
+}) => {
+  return (
+    <button className={`${formStyles.button} ${formStyles.signInGoogleButton}`} type="submit" disabled={!props.valid} onClick={props.onSubmit}>
       {props.label}
     </button>
   )
@@ -18,7 +30,7 @@ export const SecondaryButton = (props: {
   valid: boolean
 }) => {
   return (
-    <button type="submit" disabled={!props.valid} onClick={props.onSubmit}>
+    <button className={`${formStyles.button}`} type="submit" disabled={!props.valid} onClick={props.onSubmit}>
       {props.label}
     </button>
   )
@@ -42,7 +54,7 @@ export const SignInGoogleButton = (props: {
   valid: boolean
 }) => {
   return (
-    <button className={formStyles.signInGoogleButton} type="submit" disabled={!props.valid} onClick={props.onSubmit}>
+    <button className={`${formStyles.button} ${formStyles.signInGoogleButton}`} type="submit" disabled={!props.valid} onClick={props.onSubmit}>
       {props.label}
     </button>
   )

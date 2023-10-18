@@ -6,7 +6,7 @@ import Link from "next/link";
 import { logOutUser } from "@/lib/firebase";
 import { useRouter } from "next/navigation";
 import styles from "@/components/Sidebar.module.css"
-import { PrimaryButton } from './formElements/FormButton';
+import { PrimaryButton, PrimaryOutlineButton, SecondaryButton } from './formElements/FormButton';
 
 export default function Sidebar({
   children
@@ -34,14 +34,16 @@ export default function Sidebar({
         userData.user ? 
           (
             <div className={styles.second}>
-              <Link href={"/p/new"}></Link>
-              <Link href={`/u/${userData.user.id}`}>Profile</Link>
-              <button onClick={onLogout}>Logout</button>
+              <Link href={"/p/new"}><PrimaryButton label='New Post' onSubmit={() => {}} valid={true} /></Link>
+              <Link href={`/u/${userData.user.id}`}><SecondaryButton label='View Profile' onSubmit={() => {}} valid={true} /></Link>
+              <Link href={"/about"}><SecondaryButton label='About' onSubmit={() => {}} valid={true} /></Link>
+              <SecondaryButton label='Logout' onSubmit={onLogout} valid={true} />
             </div>
           ) : (
             <div className={styles.second}>
-            <Link href="/login">Login</Link>
-            <Link href="/u/new">Create Account</Link>
+              <Link href={"/about"}><SecondaryButton label='About' onSubmit={() => {}} valid={true} /></Link>
+              <Link href="/login"><PrimaryButton label='Login' onSubmit={() => {}} valid={true} /></Link>
+              <Link href="/u/new"><PrimaryOutlineButton label='Create Account' onSubmit={() => {}} valid={true} /></Link>
             </div>
           )
       }
