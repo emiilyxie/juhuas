@@ -9,3 +9,9 @@
   font-size: 3em;
   letter-spacing: 1em;
 }
+
+.second {
+  margin-bottom: 3em;
+  display: flex;
+  flex-direction: column;
+}

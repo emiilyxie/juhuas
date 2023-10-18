@@ -29,23 +29,21 @@ export default function Sidebar({
         <div>{children}</div>
       </div>
 
-      <div>
-        {
-          userData.user ? 
-            (
-              <div>
-                <Link href={`/u/${userData.user.id}`}>Profile</Link>
-                <Link href={"/p/new"}>New Post</Link>
-                <button onClick={onLogout}>Logout</button>
-              </div>
-            ) : (
-              <div>
-              <Link href="/login">Login</Link>
-              <Link href="/u/new">Create Account</Link>
-              </div>
-            )
-        }
-      </div>
+      {
+        userData.user ? 
+          (
+            <div className={styles.second}>
+              <Link href={`/u/${userData.user.id}`}>Profile</Link>
+              <Link href={"/p/new"}>New Post</Link>
+              <button onClick={onLogout}>Logout</button>
+            </div>
+          ) : (
+            <div className={styles.second}>
+            <Link href="/login">Login</Link>
+            <Link href="/u/new">Create Account</Link>
+            </div>
+          )
+      }
     </div>
   )
 }
