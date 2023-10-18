@@ -16,5 +16,5 @@
 }
 
 .second {
-  flex-grow: 1.61;
+  flex: 1.61 1 0;
 }

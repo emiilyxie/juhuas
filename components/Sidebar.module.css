@@ -1,13 +1,14 @@
-.main {
+.sidebar {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  flex: 1 1 0;
+  margin: 1em 3em;
 }
 
 .logo {
-  text-transform: uppercase;
+  text-transform: lowercase;
   font-size: 3em;
-  letter-spacing: 1em;
 }
 
 .second {
