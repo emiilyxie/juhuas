@@ -25,10 +25,9 @@ export default function Sidebar({
   return (
     <div className={styles.main}>
       <div>
-        <Link href={"/"}>J U H U A</Link>
+        <Link href={"/"} className={styles.logo}>Juhua</Link>
+        <div>{children}</div>
       </div>
-
-      <div>{children}</div>
 
       <div>
         {

@@ -1,9 +1,9 @@
 // import { useUserData } from '@/lib/hooks'
 import './globals.css'
-import { Inter } from 'next/font/google'
+import { Bodoni_Moda } from 'next/font/google'
 import { UserContextProvider } from '@/lib/contexts'
 
-const inter = Inter({ subsets: ['latin'] })
+const bodoni = Bodoni_Moda({ subsets: ['latin'] })
 
 export const metadata = {
   title: 'Create Next App',
@@ -18,7 +18,7 @@ export default function RootLayout({
 
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={bodoni.className}>
         <UserContextProvider>
           {children}
         </UserContextProvider>
