@@ -6,6 +6,7 @@ import { Post, User } from "@/lib/types";
 import { PostGrid } from "@/components/PostGrid";
 import Sidebar from "@/components/Sidebar";
 import layoutStyle from "@/app/layout.module.css"
+import Link from "next/link";
 
 export default function Page({ params }: { params : { userId : string }}) {
   const { userId } = params
@@ -46,12 +47,18 @@ export default function Page({ params }: { params : { userId : string }}) {
         <div>
           <div>{user.username}</div>
           <div>{user.bio}</div>
+
+          {
+            userId == user.id &&
+            <Link href="/u/edit">Edit Profile</Link>
+          }
+
         </div> : 
         "404" 
       }
       </Sidebar>
 
-      <div>
+      <div className={layoutStyle.second}>
         {
           loadingPosts ? "loading posts" :
           <PostGrid posts={posts} />
