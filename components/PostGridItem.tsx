@@ -23,7 +23,7 @@ const PostGridItem = (props: { post: Post }) => {
   return (
     <div>
       <div className={layoutStyles.imgWrapper}>
-        <Image src={img} alt={post.caption} style={{objectFit: "cover"}} fill sizes='30vw'/> :
+        <Image src={img} alt={post.caption} style={{objectFit: "cover"}} fill sizes='30vw'/>
       </div>
     </div>
   );

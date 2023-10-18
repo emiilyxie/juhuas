@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import formStyles from '@/components/Form.module.css'
 
 const TextInput = (props: {
   label: string,
@@ -16,7 +17,10 @@ const TextInput = (props: {
   };
 
   return (
-    <input type="text" value={value} placeholder={props.placeholder} onChange={handleValueChange} />
+    <div className={formStyles.textInputContainer}>
+      <label htmlFor={props.label}>{props.label}</label>
+      <input id={props.label} className={formStyles.textInput} type="text" value={value} placeholder={props.placeholder} onChange={handleValueChange} />
+    </div>
   );
 };
 
