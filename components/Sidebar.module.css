@@ -2,10 +2,10 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  flex-grow: 0.61;
 }
 
 .logo {
   text-transform: uppercase;
-  font-size: 6em;
+  font-size: 3em;
+  letter-spacing: 1em;
 }
