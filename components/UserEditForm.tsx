@@ -5,8 +5,10 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import TextInput from "./formElements/TextInput";
 import { ImageInput } from "./formElements/ImageInput";
-import FormButton from "./formElements/FormButton";
+import { SecondaryButton, SubmitButton } from "./formElements/FormButton";
 import { deleteUser, editUser, editUserProfilePic } from "@/lib/firebase";
+import FormLayout from "./formElements/FormLayout";
+import formStyle from "@/components/formElements/Form.module.css"
 
 export const UserEditForm = (props : { user : User } ) => {
 
@@ -37,21 +39,23 @@ export const UserEditForm = (props : { user : User } ) => {
   }
 
   const handleDelete = async () => {
-    deleteUser(props.user.id)
-    router.push("/")
+    let c = confirm("Are you sure you would like to delete your account?")
+    if (c) {
+      deleteUser(props.user.id)
+      router.push("/")
+    }
   }
 
   return (
-    <div>
-      
+    <FormLayout>
+      <div className={formStyle.title}>Edit Account</div>
       <TextInput onValueChanged={setUsername} value={username} placeholder={"username"} label="Username" />
       <TextInput onValueChanged={setEmail} value={email} placeholder={"email"} label="Email" />
       <TextInput onValueChanged={setBio} value={bio} placeholder={"bio"} label="Bio" />
       <ImageInput onSelect={setProfilePic} />
-      <FormButton onSubmit={handleSubmit} valid={isValid} label="Submit" />
-      <FormButton onSubmit={handleDelete} valid={true} label="Delete" />
-
-    </div>
+      <SubmitButton onSubmit={handleSubmit} valid={isValid} label="Save Changes" />
+      <SecondaryButton onSubmit={handleDelete} valid={true} label="Delete Account" />
+    </FormLayout>
   );
 };
 

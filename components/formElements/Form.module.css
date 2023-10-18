@@ -29,7 +29,7 @@
 .submitButton {
   padding: 1em;
   background-color: rgb(var(--foreground-rgb));
-  color: rgb(var(--background-rgb));
+  color: white;
   border-radius: 20px;
   width: 100%;
 }

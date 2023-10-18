@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import formStyles from '@/components/Form.module.css'
+import formStyles from '@/components/formElements/Form.module.css'
 
 const TextInput = (props: {
   label: string,

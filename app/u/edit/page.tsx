@@ -30,7 +30,6 @@ export default function Page() {
 
   return (
     <>
-      <div>edit user</div>
       {loading ? "loading" :
         user ? 
         <div><UserEditForm user={user}/></div> : 

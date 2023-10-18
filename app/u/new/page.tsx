@@ -14,7 +14,6 @@ export default function Page() {
 
   return (
     <>
-      <div>new</div>
       <div><UserCreateForm user={newUser}/></div>
     </>
 

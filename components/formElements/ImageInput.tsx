@@ -25,7 +25,7 @@ export function ImageInput(props : {onSelect : (img : File) => void}) {
   return (
     <div>
       <label>
-        📸 Upload Img
+        Profile Picture
         <input type="file" onChange={displayImg} accept="image/*" />
       </label>
       {selectedImage && <img src={URL.createObjectURL(selectedImage)} />}

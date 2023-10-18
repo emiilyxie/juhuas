@@ -7,10 +7,9 @@ import { useState } from "react";
 import { auth, createUser, googleProvider, userExists } from "@/lib/firebase";
 import { useRouter } from "next/navigation";
 import { User, UserRole } from "@/lib/types";
-import layoutStyle from "@/app/layout.module.css"
-import formStyle from "@/components/Form.module.css"
+import formStyle from "@/components/formElements/Form.module.css"
 import Link from "next/link";
-import Image from "next/image";
+import FormLayout from "@/components/formElements/FormLayout";
 
 export default function Page() {
 
@@ -51,23 +50,33 @@ export default function Page() {
   }
 
   return (
-    <div className={formStyle.formLayout}>
-      <div className={formStyle.formSection}>
-        <div className={formStyle.card}>
-          <div className={formStyle.title}>Crysanthenums</div>
-          <TextInput label="Username" value={username} placeholder="Email" onValueChanged={setUsername} />
-          <TextInput label="Password" value={password} placeholder="Password" onValueChanged={setPassword} />
+    <FormLayout>
+      <div className={formStyle.title}>login</div>
+      <TextInput label="Username" value={username} placeholder="Email" onValueChanged={setUsername} />
+      <TextInput label="Password" value={password} placeholder="Password" onValueChanged={setPassword} />
 
-          <SubmitButton label="Sign In" onSubmit={handleSubmit} valid={isValid} />
-          <SignInGoogleButton label="Sign In With Google" onSubmit={handleGoogleSubmit} valid={true} />
-          <Link href={"/u/new"}><SecondaryButton label="Create New Account" onSubmit={() => {}} valid={true}></SecondaryButton></Link>
-        </div>
-      </div>
-      <div className={formStyle.formSection}>
-        <div className={layoutStyle.imgWrapperFull}>
-          <Image src={"/placeholder.jpeg"} alt={"flower"} style={{objectFit: "cover"}} fill sizes='50vw'/>
-        </div>
-      </div>
-    </div>
+      <SubmitButton label="Sign In" onSubmit={handleSubmit} valid={isValid} />
+      <SignInGoogleButton label="Sign In With Google" onSubmit={handleGoogleSubmit} valid={true} />
+      <Link href={"/u/new"}><SecondaryButton label="Create New Account" onSubmit={() => {}} valid={true}></SecondaryButton></Link>
+    </FormLayout>
+
+    // <div className={formStyle.formLayout}>
+    //   <div className={formStyle.formSection}>
+    //     <div className={formStyle.card}>
+    //       <div className={formStyle.title}>Crysanthenums</div>
+    //       <TextInput label="Username" value={username} placeholder="Email" onValueChanged={setUsername} />
+    //       <TextInput label="Password" value={password} placeholder="Password" onValueChanged={setPassword} />
+
+    //       <SubmitButton label="Sign In" onSubmit={handleSubmit} valid={isValid} />
+    //       <SignInGoogleButton label="Sign In With Google" onSubmit={handleGoogleSubmit} valid={true} />
+    //       <Link href={"/u/new"}><SecondaryButton label="Create New Account" onSubmit={() => {}} valid={true}></SecondaryButton></Link>
+    //     </div>
+    //   </div>
+    //   <div className={formStyle.formSection}>
+    //     <div className={layoutStyle.imgWrapperFull}>
+    //       <Image src={"/placeholder.jpeg"} alt={"flower"} style={{objectFit: "cover"}} fill sizes='50vw'/>
+    //     </div>
+    //   </div>
+    // </div>
   )
 }

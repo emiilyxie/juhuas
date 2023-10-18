@@ -5,8 +5,10 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import TextInput from "./formElements/TextInput";
 import { ImageInput } from "./formElements/ImageInput";
-import FormButton from "./formElements/FormButton";
+import { SubmitButton } from "./formElements/FormButton";
 import { createPasswordUser, editUserProfilePic } from "@/lib/firebase";
+import FormLayout from "./formElements/FormLayout";
+import formStyle from "@/components/formElements/Form.module.css"
 
 export const UserCreateForm = (props : { user : User } ) => {
 
@@ -14,7 +16,6 @@ export const UserCreateForm = (props : { user : User } ) => {
   const [username, setUsername] = useState(props.user.username);
   const [email, setEmail] = useState(props.user.email);
   const [password, setPassword] = useState("") // TODO: input validation
-  const [bio, setBio] = useState(props.user.bio);
   const [profilePic, setProfilePic] = useState<File | null>(null)
   const isValid = (
     username.length > 0 && username.length < 500 &&
@@ -27,7 +28,7 @@ export const UserCreateForm = (props : { user : User } ) => {
       id: "",
       username: username,
       email: email,
-      bio: bio,
+      bio: "",
       role: UserRole.user,
       dateJoined: Date.now()
     }
@@ -39,16 +40,14 @@ export const UserCreateForm = (props : { user : User } ) => {
   }
 
   return (
-    <div>
-      
+    <FormLayout>
+      <div className={formStyle.title}>Create Account</div>
       <TextInput onValueChanged={setUsername} value={username} placeholder={"username"} label="Username" />
       <TextInput onValueChanged={setEmail} value={email} placeholder={"email"} label="Email" />
       <TextInput onValueChanged={setPassword} value={password} placeholder={"password"} label="Password" />
-      <TextInput onValueChanged={setBio} value={bio} placeholder={"bio"} label="Bio" />
       <ImageInput onSelect={setProfilePic} />
-      <FormButton onSubmit={handleSubmit} valid={isValid} label="Submit" />
-
-    </div>
+      <SubmitButton onSubmit={handleSubmit} valid={isValid} label="Create New Account" />
+    </FormLayout>
   );
 };
 

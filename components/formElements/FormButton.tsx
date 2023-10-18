@@ -1,4 +1,4 @@
-import formStyles from "@/components/Form.module.css"
+import formStyles from "@/components/formElements/Form.module.css"
 
 export const SubmitButton = (props: { 
   onSubmit: () => void, 
